@@ -14,7 +14,7 @@ public class Deposit {
     private String id;
 
     @Getter @Setter
-    private String customerFullName;
+    private String customer;
 
     @Getter @Setter
     private BigDecimal initialBalance;
@@ -22,9 +22,9 @@ public class Deposit {
     @Getter @Setter
     private BigDecimal upperBound;
 
-    public Deposit(String id, String customerFullName, BigDecimal initialBalance, BigDecimal upperBound) {
+    public Deposit(String id, String customer, BigDecimal initialBalance, BigDecimal upperBound) {
         this.id = id;
-        this.customerFullName = customerFullName;
+        this.customer = customer;
         this.initialBalance = initialBalance;
         this.upperBound = upperBound;
     }
