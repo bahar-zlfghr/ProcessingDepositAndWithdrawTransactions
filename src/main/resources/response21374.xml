@@ -1,0 +1,22 @@
+<list>
+  <response>
+    <transaction>
+      <id>1</id>
+      <type>DEPOSIT</type>
+      <amount>3000</amount>
+      <depositID>33227781</depositID>
+    </transaction>
+    <status>DONE</status>
+    <description>Transaction done.</description>
+  </response>
+  <response>
+    <transaction>
+      <id>2</id>
+      <type>WITHDRAW</type>
+      <amount>10000</amount>
+      <depositID>35527439</depositID>
+    </transaction>
+    <status>FAILED</status>
+    <description>The transaction amount is more than the deposit withdraw limit!</description>
+  </response>
+</list>
