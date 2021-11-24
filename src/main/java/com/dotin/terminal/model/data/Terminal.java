@@ -3,9 +3,6 @@ package com.dotin.terminal.model.data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author : Bahar Zolfaghari
  **/
@@ -18,16 +15,11 @@ public class Terminal {
     private TerminalType type;
 
     @Getter @Setter
-    private Server server;
+    private String serverIP;
 
     @Getter @Setter
-    private List<Transaction> transactions = new ArrayList<>();
+    private Integer serverPort;
 
     @Getter @Setter
     private String outLogPath;
-
-    public Terminal(String id, TerminalType type) {
-        this.id = id;
-        this.type = type;
-    }
 }
