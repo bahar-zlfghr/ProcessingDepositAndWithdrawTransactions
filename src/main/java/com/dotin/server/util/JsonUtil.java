@@ -10,10 +10,10 @@ import java.nio.file.Paths;
  * @author : Bahar Zolfaghari
  **/
 public abstract class JsonUtil {
-    private final static String ROOT = "src/main/resources";
+    private final static String ROOT = "src/main/resources/server/";
 
     public static JSONObject getJsonObject() throws IOException {
-        String jsonFileContent = new String(Files.readAllBytes(Paths.get(ROOT + "/server/core")));
+        String jsonFileContent = new String(Files.readAllBytes(Paths.get(ROOT + "core")));
         return new JSONObject(jsonFileContent);
     }
 }
