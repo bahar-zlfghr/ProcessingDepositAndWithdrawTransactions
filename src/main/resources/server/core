@@ -4,11 +4,11 @@
   "deposits":[
  {
   "upperBound":1000000,
-  "initialBalance":40000,
+  "initialBalance":46000,
   "id":"33227781",
   "customer":"Ali Alavi"},
   {
   "upperBound":0,
-  "initialBalance":40000,
+  "initialBalance":60000,
   "id":"35527439",
   "customer":"Reza Rezaei"}]}
