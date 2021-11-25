@@ -1,5 +1,6 @@
 package com.dotin.server.model.repository;
 
+import com.dotin.server.model.data.ServerLogFile;
 import com.dotin.server.model.data.Server;
 import com.dotin.server.util.JsonUtil;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public abstract class ServerRepository {
             server.setPort(port);
             String outLogPath = jsonObject.getString("outLog");
             server.setOutLogPath(outLogPath);
+            ServerLogFile.setLogFilePath("src/main/resources/log/" + outLogPath);
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }

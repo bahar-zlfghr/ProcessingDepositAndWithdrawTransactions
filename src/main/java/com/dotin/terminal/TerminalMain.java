@@ -1,12 +1,10 @@
 package com.dotin.terminal;
 
-import com.dotin.terminal.model.data.Response;
-import com.dotin.terminal.model.data.ResponseList;
-import com.dotin.terminal.model.data.Terminal;
-import com.dotin.terminal.model.data.TransactionStatus;
+import com.dotin.terminal.model.data.*;
 import com.dotin.terminal.model.repository.ResponseRepository;
 import com.dotin.terminal.model.repository.TerminalRepository;
 import com.dotin.terminal.model.repository.TransactionRepository;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
@@ -19,6 +17,7 @@ public class TerminalMain {
     private final Socket socket;
     private final BufferedReader reader;
     private final BufferedWriter writer;
+    private static Logger logger;
 
     public TerminalMain(String serverIP, Integer serverPort) throws IOException {
         this.socket = new Socket(serverIP, serverPort);
@@ -27,36 +26,38 @@ public class TerminalMain {
     }
 
     public void run() {
+        logger.info("Terminal run method started...");
         TransactionRepository.getTransactions().forEach(transaction -> {
             try {
-                // transaction -> [type, amount, depositID]
-                String id = transaction.getId();
                 String type = transaction.getType().toString();
                 String amount = transaction.getAmount().toString();
                 String depositID = transaction.getDepositID();
                 String data = String.format(DATA_FORMAT, type, amount, depositID);
-                // send transaction to server
                 writer.write(data + "\n");
                 writer.flush();
-                // get response from server -> [status, description]
+                logger.info("Terminal send the transactions one by one with [type, amount, depositID] format to server");
                 String response = reader.readLine();
                 String[] tokens = response.split(", ");
                 TransactionStatus status = TransactionStatus.getTransactionStatus(tokens[0]);
                 String description = tokens[1];
+                logger.info("Terminal receive the server response with [status, description] format from server");
                 Response serverResponse = new Response(transaction, status, description);
                 ResponseList.getResponses().add(serverResponse);
+                logger.info("Terminal save the server response per transaction in Response entity");
             } catch (IOException ioException) {
-                ioException.printStackTrace();
+                logger.error(ioException.getMessage(), ioException);
             }
         });
         try {
             writer.write("end" + "\n");
             writer.flush();
+            logger.info("Terminal after send the all transactions to server, send 'end' keyword to server");
             reader.close();
             writer.close();
             socket.close();
+            logger.info("reader, writer and socket resources closed");
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            logger.error(ioException.getMessage(), ioException);
         }
     }
 
@@ -66,6 +67,8 @@ public class TerminalMain {
             System.out.print("Please enter terminal file name in src/main/resources/terminal directory: ");
             String terminalFileName = consoleReader.readLine();
             TerminalRepository.fetchTerminal(terminalFileName);
+            System.setProperty("LogFilePath", TerminalLogFile.getLogFilePath());
+            logger = Logger.getLogger(TerminalMain.class);
             TransactionRepository.fetchTransactions(terminalFileName);
             Terminal terminal = TerminalRepository.getTerminal();
             String serverIP = terminal.getServerIP();
@@ -74,7 +77,7 @@ public class TerminalMain {
             terminalMain.run();
             ResponseRepository.saveResponses("response" + terminal.getId() + ".xml");
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            logger.error(ioException.getMessage(), ioException);
         }
     }
 }

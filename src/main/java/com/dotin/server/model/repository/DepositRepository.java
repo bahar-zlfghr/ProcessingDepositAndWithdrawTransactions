@@ -1,8 +1,10 @@
 package com.dotin.server.model.repository;
 
 import com.dotin.server.model.data.Deposit;
+import com.dotin.server.model.data.ServerLogFile;
 import com.dotin.server.util.JsonUtil;
 import lombok.Getter;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,8 +22,11 @@ public class DepositRepository {
     @Getter
     private static final List<Deposit> deposits = new ArrayList<>();
     private static final Object lockObject = new Object();
+    private static Logger logger;
 
     public static void fetchDeposits() {
+        System.setProperty("LogFilePath", ServerLogFile.getLogFilePath());
+        logger = Logger.getLogger(DepositRepository.class);
         try {
             JSONObject jsonObject = JsonUtil.getJsonObject();
             JSONArray depositsArray = jsonObject.getJSONArray("deposits");
@@ -34,11 +39,13 @@ public class DepositRepository {
                 deposits.add(deposit);
             }
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            logger.error(ioException.getMessage(), ioException);
         }
+        logger.info("Deposits info fetched successfully");
     }
 
     public static void UpdateDeposits() {
+        logger.info("Deposits info updates if after one minute no terminals connect to the server");
         synchronized (lockObject) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("port", ServerRepository.getServer().getPort());
@@ -53,9 +60,10 @@ public class DepositRepository {
                 );
                 writer.flush();
                 writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ioException) {
+                logger.error(ioException.getMessage(), ioException);
             }
+            logger.info("Deposits info updates successfully");
         }
     }
 }

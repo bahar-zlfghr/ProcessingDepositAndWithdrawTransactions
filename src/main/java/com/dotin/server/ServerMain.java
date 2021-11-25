@@ -1,8 +1,10 @@
 package com.dotin.server;
 
+import com.dotin.server.model.data.ServerLogFile;
 import com.dotin.server.model.data.Server;
 import com.dotin.server.model.repository.DepositRepository;
 import com.dotin.server.model.repository.ServerRepository;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -15,23 +17,24 @@ import java.util.concurrent.Executors;
  * @author : Bahar Zolfaghari
  **/
 public class ServerMain {
+    private static Logger logger;
     private final ServerSocket serverSocket;
     private final ExecutorService pool;
 
     public ServerMain(Integer serverPort) throws IOException {
-        System.out.println("Enter to constructor.");
+        logger.info("Server socket is initializing...");
         this.serverSocket = new ServerSocket(serverPort);
         this.serverSocket.setSoTimeout(60000);
         this.pool = Executors.newFixedThreadPool(5);
-        System.out.println("Server socket is initialized.");
+        logger.info("Server socket is initialized on " + serverPort + " port");
     }
 
     public void run() {
         while (true) {
             try {
-                System.out.println("Server socket starts listening...");
+                logger.info("Server socket starts listening on " + serverSocket.getLocalPort() + "...");
                 Socket connectionSocket = serverSocket.accept();
-                System.out.println("Server socket find a new connection.");
+                logger.info("Server socket find a new connection");
                 ServerThread serverThread = new ServerThread(connectionSocket);
                 pool.execute(serverThread);
             } catch (SocketTimeoutException e) {
@@ -51,12 +54,14 @@ public class ServerMain {
     public static void main(String[] args) {
         try {
             ServerRepository.fetchServer();
+            System.setProperty("LogFilePath", ServerLogFile.getLogFilePath());
+            logger = Logger.getLogger(ServerMain.class);
             DepositRepository.fetchDeposits();
             Server server = ServerRepository.getServer();
             ServerMain serverMain = new ServerMain(server.getPort());
             serverMain.run();
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            logger.error(ioException.getMessage(), ioException);
         }
     }
 }

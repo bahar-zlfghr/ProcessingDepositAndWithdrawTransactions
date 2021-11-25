@@ -1,5 +1,7 @@
 package com.dotin.server.service;
 
+import com.dotin.server.exception.DepositBalanceNotEnoughException;
+import com.dotin.server.exception.TransactionUpperBoundException;
 import com.dotin.server.model.data.Deposit;
 import com.dotin.server.model.repository.DepositRepository;
 
@@ -25,7 +27,7 @@ public class DepositService {
                 deposit.setInitialBalance(newBalance);
             }
         } else {
-            throw new Exception("Deposit balance not enough for this transaction!");
+            throw new DepositBalanceNotEnoughException("Deposit balance not enough for this transaction!");
         }
     }
 
@@ -39,10 +41,10 @@ public class DepositService {
                     deposit.setInitialBalance(newBalance);
                 }
             } else {
-                throw new Exception("The deposit balance not enough for this transaction!");
+                throw new DepositBalanceNotEnoughException("The deposit balance not enough for this transaction!");
             }
         } else {
-            throw new Exception("The transaction amount is more than the deposit withdraw limit!");
+            throw new TransactionUpperBoundException("The transaction amount is more than the deposit withdraw limit!");
         }
     }
 }
