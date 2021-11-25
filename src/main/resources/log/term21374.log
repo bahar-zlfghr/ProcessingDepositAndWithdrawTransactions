@@ -1,0 +1,69 @@
+[main] INFO  com.dotin.terminal.model.repository.TerminalRepository  - Terminal info fetched successfully
+[main] INFO  com.dotin.terminal.model.repository.TransactionRepository  - Transactions info fetched successfully
+[main] ERROR com.dotin.terminal.TerminalMain  - Connection refused: connect
+java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:75)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:476)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:218)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:200)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:162)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:394)
+	at java.net.Socket.connect(Socket.java:606)
+	at java.net.Socket.connect(Socket.java:555)
+	at java.net.Socket.<init>(Socket.java:451)
+	at java.net.Socket.<init>(Socket.java:228)
+	at com.dotin.terminal.TerminalMain.<init>(TerminalMain.java:23)
+	at com.dotin.terminal.TerminalMain.main(TerminalMain.java:76)
+[main] INFO  com.dotin.terminal.model.repository.TerminalRepository  - Terminal info fetched successfully
+[main] INFO  com.dotin.terminal.model.repository.TransactionRepository  - Transactions info fetched successfully
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal run method started...
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal send the transactions one by one with [type, amount, depositID] format to server
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal receive the server response with [status, description] format from server
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal save the server response per transaction in Response entity
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal send the transactions one by one with [type, amount, depositID] format to server
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal receive the server response with [status, description] format from server
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal save the server response per transaction in Response entity
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal after send the all transactions to server, send 'end' keyword to server
+[main] INFO  com.dotin.terminal.TerminalMain  - reader, writer and socket resources closed
+[main] INFO  com.dotin.terminal.model.repository.TerminalRepository  - Terminal info fetched successfully
+[main] ERROR com.dotin.terminal.model.repository.TransactionRepository  - TransactionTypeMismatchException
+com.dotin.terminal.exception.TransactionTypeMismatchException: TransactionTypeMismatchException
+	at com.dotin.terminal.model.repository.TransactionRepository.fetchTransactions(TransactionRepository.java:44)
+	at com.dotin.terminal.TerminalMain.main(TerminalMain.java:72)
+[main] INFO  com.dotin.terminal.model.repository.TransactionRepository  - Transactions info fetched successfully
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal run method started...
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal send the transactions one by one with [type, amount, depositID] format to server
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal receive the server response with [status, description] format from server
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal save the server response per transaction in Response entity
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal send the transactions one by one with [type, amount, depositID] format to server
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal receive the server response with [status, description] format from server
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal save the server response per transaction in Response entity
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal after send the all transactions to server, send 'end' keyword to server
+[main] INFO  com.dotin.terminal.TerminalMain  - reader, writer and socket resources closed
+[main] INFO  com.dotin.terminal.model.repository.TerminalRepository  - Terminal info fetched successfully
+[main] ERROR com.dotin.terminal.model.repository.TransactionRepository  - TransactionTypeMismatchException
+com.dotin.terminal.exception.TransactionTypeMismatchException: TransactionTypeMismatchException
+	at com.dotin.terminal.model.repository.TransactionRepository.fetchTransactions(TransactionRepository.java:44)
+	at com.dotin.terminal.TerminalMain.main(TerminalMain.java:72)
+[main] INFO  com.dotin.terminal.model.repository.TransactionRepository  - Transactions info fetched successfully
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal run method started...
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal send the transactions one by one with [type, amount, depositID] format to server
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal receive the server response with [status, description] format from server
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal save the server response per transaction in Response entity
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal send the transactions one by one with [type, amount, depositID] format to server
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal receive the server response with [status, description] format from server
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal save the server response per transaction in Response entity
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal after send the all transactions to server, send 'end' keyword to server
+[main] INFO  com.dotin.terminal.TerminalMain  - reader, writer and socket resources closed
+[main] INFO  com.dotin.terminal.model.repository.TerminalRepository  - Terminal info fetched successfully
+[main] INFO  com.dotin.terminal.model.repository.TransactionRepository  - Transactions info fetched successfully
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal run method started...
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal send the transactions one by one with [type, amount, depositID] format to server
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal receive the server response with [status, description] format from server
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal save the server response per transaction in Response entity
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal send the transactions one by one with [type, amount, depositID] format to server
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal receive the server response with [status, description] format from server
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal save the server response per transaction in Response entity
+[main] INFO  com.dotin.terminal.TerminalMain  - Terminal after send the all transactions to server, send 'end' keyword to server
+[main] INFO  com.dotin.terminal.TerminalMain  - reader, writer and socket resources closed
