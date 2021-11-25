@@ -18,6 +18,7 @@ public class TerminalMain {
     private final BufferedReader reader;
     private final BufferedWriter writer;
     private static Logger logger;
+    private static final Object lockObject = new Object();
 
     public TerminalMain(String serverIP, Integer serverPort) throws IOException {
         this.socket = new Socket(serverIP, serverPort);
@@ -27,37 +28,39 @@ public class TerminalMain {
 
     public void run() {
         logger.info("Terminal run method started...");
-        TransactionRepository.getTransactions().forEach(transaction -> {
+        synchronized (lockObject) {
+            TransactionRepository.getTransactions().forEach(transaction -> {
+                try {
+                    String type = transaction.getType().toString();
+                    String amount = transaction.getAmount().toString();
+                    String depositID = transaction.getDepositID();
+                    String data = String.format(DATA_FORMAT, type, amount, depositID);
+                    writer.write(data + "\n");
+                    writer.flush();
+                    logger.info("Terminal send the transactions one by one with [type, amount, depositID] format to server");
+                    String response = reader.readLine();
+                    String[] tokens = response.split(", ");
+                    TransactionStatus status = TransactionStatus.getTransactionStatus(tokens[0]);
+                    String description = tokens[1];
+                    logger.info("Terminal receive the server response with [status, description] format from server");
+                    Response serverResponse = new Response(transaction, status, description);
+                    ResponseList.getResponses().add(serverResponse);
+                    logger.info("Terminal save the server response per transaction in Response entity");
+                } catch (IOException ioException) {
+                    logger.error(ioException.getMessage(), ioException);
+                }
+            });
             try {
-                String type = transaction.getType().toString();
-                String amount = transaction.getAmount().toString();
-                String depositID = transaction.getDepositID();
-                String data = String.format(DATA_FORMAT, type, amount, depositID);
-                writer.write(data + "\n");
+                writer.write("end" + "\n");
                 writer.flush();
-                logger.info("Terminal send the transactions one by one with [type, amount, depositID] format to server");
-                String response = reader.readLine();
-                String[] tokens = response.split(", ");
-                TransactionStatus status = TransactionStatus.getTransactionStatus(tokens[0]);
-                String description = tokens[1];
-                logger.info("Terminal receive the server response with [status, description] format from server");
-                Response serverResponse = new Response(transaction, status, description);
-                ResponseList.getResponses().add(serverResponse);
-                logger.info("Terminal save the server response per transaction in Response entity");
+                logger.info("Terminal after send the all transactions to server, send 'end' keyword to server");
+                reader.close();
+                writer.close();
+                socket.close();
+                logger.info("reader, writer and socket resources closed");
             } catch (IOException ioException) {
                 logger.error(ioException.getMessage(), ioException);
             }
-        });
-        try {
-            writer.write("end" + "\n");
-            writer.flush();
-            logger.info("Terminal after send the all transactions to server, send 'end' keyword to server");
-            reader.close();
-            writer.close();
-            socket.close();
-            logger.info("reader, writer and socket resources closed");
-        } catch (IOException ioException) {
-            logger.error(ioException.getMessage(), ioException);
         }
     }
 
