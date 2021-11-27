@@ -9,11 +9,14 @@ import java.nio.file.Paths;
 /**
  * @author : Bahar Zolfaghari
  **/
-public abstract class JsonUtil {
-    private final static String ROOT = "src/main/resources/server/";
+public interface JsonUtil {
 
-    public static JSONObject getJsonObject() throws IOException {
-        String jsonFileContent = new String(Files.readAllBytes(Paths.get(ROOT + "core")));
+    static JSONObject getJsonObject(String fileName) throws IOException {
+        String jsonFileContent = new String(Files.readAllBytes(Paths.get("src/main/resources/server/" + fileName)));
         return new JSONObject(jsonFileContent);
+    }
+
+    static JSONObject getJsonObject() {
+        return new JSONObject();
     }
 }

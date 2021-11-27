@@ -1,7 +1,7 @@
 package com.dotin.server.service;
 
 import com.dotin.server.exception.DepositBalanceNotEnoughException;
-import com.dotin.server.exception.TransactionUpperBoundException;
+import com.dotin.server.exception.IncorrectTransactionAmountException;
 import com.dotin.server.model.data.Deposit;
 import com.dotin.server.model.repository.DepositRepository;
 
@@ -19,32 +19,33 @@ public class DepositService {
                 deposit -> deposit.getId().equals(depositID)).findFirst();
     }
 
-    public static void deposit(Deposit deposit, BigDecimal amount) throws Exception {
+    public static void deposit(Deposit deposit, BigDecimal amount) throws IncorrectTransactionAmountException {
         BigDecimal initialBalance = deposit.getInitialBalance();
-        if (amount.compareTo(BigDecimal.ZERO) > 0) {
-            synchronized (lockObject) {
-                BigDecimal newBalance = initialBalance.add(amount);
-                deposit.setInitialBalance(newBalance);
-            }
-        } else {
-            throw new DepositBalanceNotEnoughException("Deposit balance not enough for this transaction!");
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IncorrectTransactionAmountException("The transaction amount equal or less than zero!");
+        }
+        synchronized (lockObject) {
+            BigDecimal newBalance = initialBalance.add(amount);
+            deposit.setInitialBalance(newBalance);
         }
     }
 
-    public static void withdraw(Deposit deposit, BigDecimal amount) throws Exception {
+    public static void withdraw(Deposit deposit, BigDecimal amount) throws IncorrectTransactionAmountException, DepositBalanceNotEnoughException {
         BigDecimal initialBalance = deposit.getInitialBalance();
         BigDecimal upperBound = deposit.getUpperBound();
-        if (amount.compareTo(upperBound) <= 0) {
-            if (initialBalance.compareTo(amount) >= 0) {
-                synchronized (lockObject) {
-                    BigDecimal newBalance = initialBalance.subtract(amount);
-                    deposit.setInitialBalance(newBalance);
-                }
-            } else {
-                throw new DepositBalanceNotEnoughException("The deposit balance not enough for this transaction!");
-            }
-        } else {
-            throw new TransactionUpperBoundException("The transaction amount is more than the deposit withdraw limit!");
+        if (amount.compareTo(upperBound) > 0) {
+            throw new IncorrectTransactionAmountException("The transaction amount is more than the deposit upper bound!");
         }
+        if (initialBalance.compareTo(amount) < 0) {
+            throw new DepositBalanceNotEnoughException("The deposit balance is less than transaction amount!");
+        }
+        synchronized (lockObject) {
+            BigDecimal newBalance = initialBalance.subtract(amount);
+            deposit.setInitialBalance(newBalance);
+        }
+    }
+
+    public static Boolean depositValidation(String depositID) {
+        return getDepositByID(depositID).isPresent();
     }
 }

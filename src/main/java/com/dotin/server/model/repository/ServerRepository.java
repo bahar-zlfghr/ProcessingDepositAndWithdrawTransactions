@@ -18,7 +18,7 @@ public abstract class ServerRepository {
 
     public static void fetchServer() {
         try {
-            JSONObject jsonObject = JsonUtil.getJsonObject();
+            JSONObject jsonObject = JsonUtil.getJsonObject("core");
             Integer port = jsonObject.getInt("port");
             server.setPort(port);
             String outLogPath = jsonObject.getString("outLog");

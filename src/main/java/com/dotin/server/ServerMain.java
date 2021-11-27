@@ -38,16 +38,20 @@ public class ServerMain {
                 ServerThread serverThread = new ServerThread(connectionSocket);
                 pool.execute(serverThread);
             } catch (SocketTimeoutException e) {
-                DepositRepository.UpdateDeposits();
+                DepositRepository.saveDepositsChanges();
+                closeServerSocket(serverSocket);
                 break;
             } catch (IOException ioException) {
-                ioException.printStackTrace();
+                logger.error(ioException.getMessage(), ioException);
             }
         }
+    }
+
+    private void closeServerSocket(ServerSocket serverSocket) {
         try {
             serverSocket.close();
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            logger.error(ioException.getMessage(), ioException);
         }
     }
 
