@@ -34,6 +34,7 @@ public class TerminalMain {
                     sendTransactionToServer(transaction);
                     logger.info("Terminal send the transactions one by one with [type, amount, depositID] format to server");
                     Response serverResponse = receiveResponseFromServer();
+                    serverResponse.setTransaction(transaction);
                     logger.info("Terminal receive the server response with [status, description] format from server");
                     ResponseList.getResponses().add(serverResponse);
                     logger.info("Terminal saves the server response per transaction in Response entity");
