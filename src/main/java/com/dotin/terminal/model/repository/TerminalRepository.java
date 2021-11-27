@@ -3,6 +3,7 @@ package com.dotin.terminal.model.repository;
 import com.dotin.terminal.exception.TerminalTypeMismatchException;
 import com.dotin.terminal.model.data.*;
 import com.dotin.terminal.util.DocumentUtil;
+import com.dotin.terminal.util.LoggerUtil;
 import lombok.Getter;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -68,8 +69,7 @@ public class TerminalRepository {
             String outLogPath = transactionElement.getAttribute("path");
             terminal.setOutLogPath(outLogPath);
             TerminalLogFile.setLogFilePath("src/main/resources/log/" + outLogPath);
-            System.setProperty("LogFilePath", TerminalLogFile.getLogFilePath());
-            logger = Logger.getLogger(TerminalRepository.class);
+            logger = LoggerUtil.getLogger(TerminalRepository.class, TerminalLogFile.getLogFilePath());
         }
     }
 }

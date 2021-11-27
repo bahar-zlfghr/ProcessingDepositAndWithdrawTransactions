@@ -7,6 +7,7 @@ import com.dotin.server.model.data.ServerLogFile;
 import com.dotin.server.model.data.TransactionView;
 import com.dotin.server.service.DepositService;
 import com.dotin.server.service.TransactionViewService;
+import com.dotin.server.util.LoggerUtil;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -23,8 +24,7 @@ public class ServerThread implements Runnable {
     private static Logger logger;
 
     public ServerThread(Socket connectionSocket) throws IOException {
-        System.setProperty("LogFilePath", ServerLogFile.getLogFilePath());
-        logger = Logger.getLogger(ServerThread.class);
+        logger = LoggerUtil.getLogger(ServerMain.class, ServerLogFile.getLogFilePath());
         this.connectionSocket = connectionSocket;
         this.reader = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
         this.writer = new BufferedWriter(new OutputStreamWriter(connectionSocket.getOutputStream()));
@@ -42,7 +42,7 @@ public class ServerThread implements Runnable {
                 } else {
                     TransactionView transactionView = TransactionViewService.createTransactionView(data);
                     logger.info("The server check the deposit with id that terminal sends is exist or not");
-                    if (!DepositService.depositValidation(transactionView.getDepositID())) {
+                    if (Boolean.FALSE.equals(DepositService.depositValidation(transactionView.getDepositID()))) {
                         incorrectDepositIDTask(transactionView);
                     }
                     else {

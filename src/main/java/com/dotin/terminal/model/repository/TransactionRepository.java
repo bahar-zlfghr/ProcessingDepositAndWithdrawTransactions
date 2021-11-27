@@ -6,6 +6,7 @@ import com.dotin.terminal.model.data.TerminalLogFile;
 import com.dotin.terminal.model.data.Transaction;
 import com.dotin.terminal.model.data.TransactionType;
 import com.dotin.terminal.util.DocumentUtil;
+import com.dotin.terminal.util.LoggerUtil;
 import lombok.Getter;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -29,8 +30,7 @@ public class TransactionRepository {
     private static final List<Transaction> transactions = new ArrayList<>();
 
     public static void fetchTransactions(String terminalFileName) {
-        System.setProperty("LogFilePath", TerminalLogFile.getLogFilePath());
-        Logger logger = Logger.getLogger(TransactionRepository.class);
+        Logger logger = LoggerUtil.getLogger(TransactionRepository.class, TerminalLogFile.getLogFilePath());
         try {
             Document document = DocumentUtil.createDocument(terminalFileName);
             NodeList transactionNodes = document.getElementsByTagName("transaction");

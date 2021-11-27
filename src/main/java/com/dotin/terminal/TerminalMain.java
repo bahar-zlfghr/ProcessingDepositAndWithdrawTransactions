@@ -4,6 +4,7 @@ import com.dotin.terminal.model.data.*;
 import com.dotin.terminal.model.repository.ResponseRepository;
 import com.dotin.terminal.model.repository.TerminalRepository;
 import com.dotin.terminal.model.repository.TransactionRepository;
+import com.dotin.terminal.util.LoggerUtil;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -86,8 +87,7 @@ public class TerminalMain {
             System.out.print("Please enter terminal file name in src/main/resources/terminal directory: ");
             String terminalFileName = consoleReader.readLine();
             TerminalRepository.fetchTerminal(terminalFileName);
-            System.setProperty("LogFilePath", TerminalLogFile.getLogFilePath());
-            logger = Logger.getLogger(TerminalMain.class);
+            logger = LoggerUtil.getLogger(TerminalMain.class, TerminalLogFile.getLogFilePath());
             TransactionRepository.fetchTransactions(terminalFileName);
             Terminal terminal = TerminalRepository.getTerminal();
             String serverIP = terminal.getServerIP();

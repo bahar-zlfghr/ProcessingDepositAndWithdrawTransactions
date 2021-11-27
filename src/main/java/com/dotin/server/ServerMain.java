@@ -4,6 +4,7 @@ import com.dotin.server.model.data.ServerLogFile;
 import com.dotin.server.model.data.Server;
 import com.dotin.server.model.repository.DepositRepository;
 import com.dotin.server.model.repository.ServerRepository;
+import com.dotin.server.util.LoggerUtil;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -17,9 +18,9 @@ import java.util.concurrent.Executors;
  * @author : Bahar Zolfaghari
  **/
 public class ServerMain {
-    private static Logger logger;
     private final ServerSocket serverSocket;
     private final ExecutorService pool;
+    private static Logger logger;
 
     public ServerMain(Integer serverPort) throws IOException {
         logger.info("Server socket is initializing...");
@@ -58,8 +59,7 @@ public class ServerMain {
     public static void main(String[] args) {
         try {
             ServerRepository.fetchServer();
-            System.setProperty("LogFilePath", ServerLogFile.getLogFilePath());
-            logger = Logger.getLogger(ServerMain.class);
+            logger = LoggerUtil.getLogger(ServerMain.class, ServerLogFile.getLogFilePath());
             DepositRepository.fetchDeposits();
             Server server = ServerRepository.getServer();
             ServerMain serverMain = new ServerMain(server.getPort());

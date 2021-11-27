@@ -1,8 +1,10 @@
 package com.dotin.server.model.repository;
 
+import com.dotin.server.ServerMain;
 import com.dotin.server.model.data.Deposit;
 import com.dotin.server.model.data.ServerLogFile;
 import com.dotin.server.util.JsonUtil;
+import com.dotin.server.util.LoggerUtil;
 import com.dotin.server.util.PrintWriterUtil;
 import lombok.Getter;
 import org.apache.log4j.Logger;
@@ -24,8 +26,7 @@ public class DepositRepository {
     private static Logger logger;
 
     public static void fetchDeposits() {
-        System.setProperty("LogFilePath", ServerLogFile.getLogFilePath());
-        logger = Logger.getLogger(DepositRepository.class);
+        logger = LoggerUtil.getLogger(ServerMain.class, ServerLogFile.getLogFilePath());
         try {
             JSONObject jsonObject = JsonUtil.getJsonObject("core");
             JSONArray depositsArray = jsonObject.getJSONArray("deposits");
