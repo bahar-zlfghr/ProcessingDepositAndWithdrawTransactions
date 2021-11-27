@@ -59,7 +59,6 @@ public class ServerThread implements Runnable {
                         }
                     }
                 }
-
             } catch (IOException ioException) {
                 logger.error(ioException.getMessage(), ioException);
             }
@@ -67,15 +66,17 @@ public class ServerThread implements Runnable {
     }
 
     private void endTask() throws IOException {
+        reader.close();
+        writer.close();
         connectionSocket.close();
-        logger.info("Server closed terminal socket if it sends 'end' keyword");
+        logger.info("Server closed terminal socket & resources if it sends 'end' keyword");
     }
 
     private void incorrectDepositIDTask(TransactionView transactionView) throws IOException {
         logger.info("The server not found no deposit with " + transactionView.getDepositID() + " id!");
         String message = "No deposit was found with " + transactionView.getDepositID() + " id!";
         String response = String.format(RESPONSE_FORMAT, "failed", message);
-        sendResponse(response);
+        sendResponseToTerminal(response);
     }
 
     private void depositTransactionTask(TransactionView transactionView, Deposit deposit) throws IOException {
@@ -89,7 +90,7 @@ public class ServerThread implements Runnable {
             response = String.format(RESPONSE_FORMAT, "failed", e.getMessage());
             logger.error(e.getMessage(), e);
         }
-        sendResponse(response);
+        sendResponseToTerminal(response);
     }
 
     private void withdrawTransactionTask(TransactionView transactionView, Deposit deposit) throws IOException {
@@ -103,10 +104,10 @@ public class ServerThread implements Runnable {
             response = String.format(RESPONSE_FORMAT, "failed", e.getMessage());
             logger.error(e.getMessage(), e);
         }
-        sendResponse(response);
+        sendResponseToTerminal(response);
     }
 
-    private void sendResponse(String response) throws IOException {
+    private void sendResponseToTerminal(String response) throws IOException {
         writer.write(response + "\n");
         writer.flush();
     }
