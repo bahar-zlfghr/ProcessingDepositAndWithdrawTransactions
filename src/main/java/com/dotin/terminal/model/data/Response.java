@@ -17,8 +17,7 @@ public class Response {
     @Getter @Setter
     private String description;
 
-    public Response(Transaction transaction, TransactionStatus status, String description) {
-        this.transaction = transaction;
+    public Response(TransactionStatus status, String description) {
         this.status = status;
         this.description = description;
     }
