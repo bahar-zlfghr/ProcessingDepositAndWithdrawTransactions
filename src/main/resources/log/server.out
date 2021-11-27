@@ -1,9 +1,4 @@
-[main] INFO  com.dotin.server.model.repository.DepositRepository  - Deposits info fetched successfully
-[main] INFO  com.dotin.server.ServerMain  - Server socket is initializing...
-[main] INFO  com.dotin.server.ServerMain  - Server socket is initialized on 8080 port
-[main] INFO  com.dotin.server.ServerMain  - Server socket starts listening on 8080...
-[main] INFO  com.dotin.server.model.repository.DepositRepository  - Deposits info updates if after one minute no terminals connect to the server
-[main] INFO  com.dotin.server.model.repository.DepositRepository  - Deposits info updates successfully
+
 [main] INFO  com.dotin.server.model.repository.DepositRepository  - Deposits info fetched successfully
 [main] INFO  com.dotin.server.ServerMain  - Server socket is initializing...
 [main] INFO  com.dotin.server.ServerMain  - Server socket is initialized on 8080 port
@@ -17,68 +12,15 @@
 [pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server receive the data that terminal sends
 [pool-1-thread-1] INFO  com.dotin.server.ServerThread  - The server check the deposit with id that terminal sends is exist or not
 [pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server starts doing withdraw transaction...
-[pool-1-thread-1] ERROR com.dotin.server.ServerThread  - The transaction amount is more than the deposit withdraw limit!
-java.lang.Exception: The transaction amount is more than the deposit withdraw limit!
-	at com.dotin.server.service.DepositService.withdraw(DepositService.java:45)
-	at com.dotin.server.ServerThread.run(ServerThread.java:70)
+[pool-1-thread-1] ERROR com.dotin.server.ServerThread  - The transaction amount is more than the deposit upper bound!
+com.dotin.server.exception.IncorrectTransactionAmountException: The transaction amount is more than the deposit upper bound!
+	at com.dotin.server.service.DepositService.withdraw(DepositService.java:37)
+	at com.dotin.server.ServerThread.withdrawTransactionTask(ServerThread.java:100)
+	at com.dotin.server.ServerThread.run(ServerThread.java:57)
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
 	at java.lang.Thread.run(Thread.java:748)
 [pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server receive the data that terminal sends
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server closed terminal socket if it sends 'end' keyword
-[main] INFO  com.dotin.server.model.repository.DepositRepository  - Deposits info updates if after one minute no terminals connect to the server
-[main] INFO  com.dotin.server.model.repository.DepositRepository  - Deposits info updates successfully
-[main] INFO  com.dotin.server.model.repository.DepositRepository  - Deposits info fetched successfully
-[main] INFO  com.dotin.server.ServerMain  - Server socket is initializing...
-[main] INFO  com.dotin.server.ServerMain  - Server socket is initialized on 8080 port
-[main] INFO  com.dotin.server.ServerMain  - Server socket starts listening on 8080...
-[main] INFO  com.dotin.server.ServerMain  - Server socket find a new connection
-[main] INFO  com.dotin.server.ServerMain  - Server socket starts listening on 8080...
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server receive the data that terminal sends
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - The server check the deposit with id that terminal sends is exist or not
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server starts doing withdraw transaction...
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Withdraw transaction done successfully
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server receive the data that terminal sends
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - The server check the deposit with id that terminal sends is exist or not
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server starts doing deposit transaction...
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Deposit transaction done successfully
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server receive the data that terminal sends
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server closed terminal socket if it sends 'end' keyword
-[main] INFO  com.dotin.server.ServerMain  - Server socket find a new connection
-[main] INFO  com.dotin.server.ServerMain  - Server socket starts listening on 8080...
-[pool-1-thread-2] INFO  com.dotin.server.ServerThread  - Server receive the data that terminal sends
-[pool-1-thread-2] INFO  com.dotin.server.ServerThread  - The server check the deposit with id that terminal sends is exist or not
-[pool-1-thread-2] INFO  com.dotin.server.ServerThread  - Server starts doing withdraw transaction...
-[pool-1-thread-2] INFO  com.dotin.server.ServerThread  - Withdraw transaction done successfully
-[pool-1-thread-2] INFO  com.dotin.server.ServerThread  - Server receive the data that terminal sends
-[pool-1-thread-2] INFO  com.dotin.server.ServerThread  - The server check the deposit with id that terminal sends is exist or not
-[pool-1-thread-2] INFO  com.dotin.server.ServerThread  - Server starts doing deposit transaction...
-[pool-1-thread-2] INFO  com.dotin.server.ServerThread  - Deposit transaction done successfully
-[pool-1-thread-2] INFO  com.dotin.server.ServerThread  - Server receive the data that terminal sends
-[pool-1-thread-2] INFO  com.dotin.server.ServerThread  - Server closed terminal socket if it sends 'end' keyword
-[main] INFO  com.dotin.server.model.repository.DepositRepository  - Deposits info updates if after one minute no terminals connect to the server
-[main] INFO  com.dotin.server.model.repository.DepositRepository  - Deposits info updates successfully
-[main] INFO  com.dotin.server.model.repository.DepositRepository  - Deposits info fetched successfully
-[main] INFO  com.dotin.server.ServerMain  - Server socket is initializing...
-[main] INFO  com.dotin.server.ServerMain  - Server socket is initialized on 8080 port
-[main] INFO  com.dotin.server.ServerMain  - Server socket starts listening on 8080...
-[main] INFO  com.dotin.server.ServerMain  - Server socket find a new connection
-[main] INFO  com.dotin.server.ServerMain  - Server socket starts listening on 8080...
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server receive the data that terminal sends
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - The server check the deposit with id that terminal sends is exist or not
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server starts doing deposit transaction...
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Deposit transaction done successfully
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server receive the data that terminal sends
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - The server check the deposit with id that terminal sends is exist or not
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server starts doing withdraw transaction...
-[pool-1-thread-1] ERROR com.dotin.server.ServerThread  - The transaction amount is more than the deposit withdraw limit!
-com.dotin.server.exception.TransactionUpperBoundException: The transaction amount is more than the deposit withdraw limit!
-	at com.dotin.server.service.DepositService.withdraw(DepositService.java:47)
-	at com.dotin.server.ServerThread.run(ServerThread.java:70)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
-	at java.lang.Thread.run(Thread.java:748)
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server receive the data that terminal sends
-[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server closed terminal socket if it sends 'end' keyword
-[main] INFO  com.dotin.server.model.repository.DepositRepository  - Deposits info updates if after one minute no terminals connect to the server
-[main] INFO  com.dotin.server.model.repository.DepositRepository  - Deposits info updates successfully
+[pool-1-thread-1] INFO  com.dotin.server.ServerThread  - Server closed terminal socket & resources if it sends 'end' keyword
+[main] INFO  com.dotin.server.model.repository.DepositRepository  - The changes of deposits save if after one minute no terminals connect to the server
+[main] INFO  com.dotin.server.model.repository.DepositRepository  - The changes of deposits saved successfully

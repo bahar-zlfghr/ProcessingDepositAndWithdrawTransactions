@@ -7,7 +7,7 @@
       <depositID>33227781</depositID>
     </transaction>
     <status>DONE</status>
-    <description>Transaction done.</description>
+    <description>Transaction done</description>
   </response>
   <response>
     <transaction>
@@ -17,6 +17,6 @@
       <depositID>35527439</depositID>
     </transaction>
     <status>FAILED</status>
-    <description>The transaction amount is more than the deposit withdraw limit!</description>
+    <description>The transaction amount is more than the deposit upper bound!</description>
   </response>
 </list>
