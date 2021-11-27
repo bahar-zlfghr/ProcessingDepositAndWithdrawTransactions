@@ -31,37 +31,52 @@ public class TerminalMain {
         synchronized (lockObject) {
             TransactionRepository.getTransactions().forEach(transaction -> {
                 try {
-                    String type = transaction.getType().toString();
-                    String amount = transaction.getAmount().toString();
-                    String depositID = transaction.getDepositID();
-                    String data = String.format(DATA_FORMAT, type, amount, depositID);
-                    writer.write(data + "\n");
-                    writer.flush();
+                    sendTransactionToServer(transaction);
                     logger.info("Terminal send the transactions one by one with [type, amount, depositID] format to server");
-                    String response = reader.readLine();
-                    String[] tokens = response.split(", ");
-                    TransactionStatus status = TransactionStatus.getTransactionStatus(tokens[0]);
-                    String description = tokens[1];
+                    Response serverResponse = receiveResponseFromServer();
                     logger.info("Terminal receive the server response with [status, description] format from server");
-                    Response serverResponse = new Response(transaction, status, description);
                     ResponseList.getResponses().add(serverResponse);
-                    logger.info("Terminal save the server response per transaction in Response entity");
+                    logger.info("Terminal saves the server response per transaction in Response entity");
                 } catch (IOException ioException) {
                     logger.error(ioException.getMessage(), ioException);
                 }
             });
             try {
-                writer.write("end" + "\n");
-                writer.flush();
+                sendDataToServer("end");
                 logger.info("Terminal after send the all transactions to server, send 'end' keyword to server");
-                reader.close();
-                writer.close();
-                socket.close();
+                closeResource();
                 logger.info("reader, writer and socket resources closed");
             } catch (IOException ioException) {
                 logger.error(ioException.getMessage(), ioException);
             }
         }
+    }
+
+    private Response receiveResponseFromServer() throws IOException {
+        String response = reader.readLine();
+        String[] tokens = response.split(", ");
+        TransactionStatus status = TransactionStatus.getTransactionStatus(tokens[0]);
+        String description = tokens[1];
+        return new Response(status, description);
+    }
+
+    private void sendTransactionToServer(Transaction transaction) throws IOException {
+        String type = transaction.getType().toString();
+        String amount = transaction.getAmount().toString();
+        String depositID = transaction.getDepositID();
+        String data = String.format(DATA_FORMAT, type, amount, depositID);
+        sendDataToServer(data);
+    }
+
+    private void sendDataToServer(String data) throws IOException {
+        writer.write(data + "\n");
+        writer.flush();
+    }
+
+    private void closeResource() throws IOException {
+        reader.close();
+        writer.close();
+        socket.close();
     }
 
     public static void main(String[] args) {
