@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author : Bahar Zolfaghari
  **/
-public class ResponseRepository {
+public abstract class ResponseRepository {
     private static final XStream xStream = XStreamUtil.createXStream();
 
     public static void saveResponses(String fileName) throws FileNotFoundException {

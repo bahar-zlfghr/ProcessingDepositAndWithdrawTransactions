@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * @author : Bahar Zolfaghari
  **/
-public class TerminalRepository {
+public abstract class TerminalRepository {
 
     @Getter
     private static final Terminal terminal = new Terminal();
