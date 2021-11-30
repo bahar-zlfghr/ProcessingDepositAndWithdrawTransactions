@@ -12,11 +12,10 @@ import java.io.IOException;
 /**
  * @author : Bahar Zolfaghari
  **/
-public abstract class DocumentUtil {
-    private final static String ROOT = "src/main/resources/terminal/";
+public interface DocumentUtil {
 
-    public static Document createDocument(String fileName) throws ParserConfigurationException, IOException, SAXException {
-        File file = new File(ROOT +  fileName);
+    static Document createDocument(String fileName) throws ParserConfigurationException, IOException, SAXException {
+        File file = new File("src/main/resources/terminal/" + fileName + ".xml");
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         return builder.parse(file);
