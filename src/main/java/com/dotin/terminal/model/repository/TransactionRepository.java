@@ -45,8 +45,8 @@ public abstract class TransactionRepository {
                     }
                     else {
                         LoggerUtil.exceptionsLog(exceptions);
+                        exceptions.clear();
                     }
-                    exceptions.clear();
                 }
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
