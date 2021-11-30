@@ -11,7 +11,7 @@ import java.util.Optional;
 /**
  * @author : Bahar Zolfaghari
  **/
-public class DepositService {
+public abstract class DepositService {
     private static final Object lockObject = new Object();
 
     public static Optional<Deposit> getDepositByID(String depositID) {
