@@ -2,9 +2,9 @@
   "port":8080,
   "outLog":"server.out",
   "deposits":[
- {
+  {
   "upperBound":1000000,
-  "initialBalance":46000,
+  "initialBalance":49000,
   "id":"33227781",
   "customer":"Ali Alavi"},
   {
