@@ -7,9 +7,9 @@ import com.thoughtworks.xstream.XStream;
 /**
  * @author : Bahar Zolfaghari
  **/
-public class XStreamUtil {
+public interface XStreamUtil {
 
-    public static XStream createXStream() {
+    static XStream createXStream() {
         XStream xStream = new XStream();
         xStream.alias("responses", ResponseList.class);
         xStream.alias("response", Response.class);
