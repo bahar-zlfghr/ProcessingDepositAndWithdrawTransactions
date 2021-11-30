@@ -47,16 +47,7 @@ public class ServerThread implements Runnable {
                     }
                     else {
                         Deposit deposit = DepositService.getDepositByID(transactionView.getDepositID()).orElse(null);
-                        switch (transactionView.getType()) {
-                            case "deposit":
-                            case "DEPOSIT":
-                                depositTransactionTask(transactionView, deposit);
-                                break;
-                            case "withdraw":
-                            case "WITHDRAW":
-                                withdrawTransactionTask(transactionView, deposit);
-                                break;
-                        }
+                        doTransaction(deposit, transactionView);
                     }
                 }
             } catch (IOException ioException) {
@@ -77,6 +68,17 @@ public class ServerThread implements Runnable {
         String message = "No deposit was found with " + transactionView.getDepositID() + " id!";
         String response = String.format(RESPONSE_FORMAT, "failed", message);
         sendResponseToTerminal(response);
+    }
+
+    private void doTransaction(Deposit deposit, TransactionView transactionView) throws IOException {
+        switch (transactionView.getType()) {
+            case DEPOSIT:
+                depositTransactionTask(transactionView, deposit);
+                break;
+            case WITHDRAW:
+                withdrawTransactionTask(transactionView, deposit);
+                break;
+        }
     }
 
     private void depositTransactionTask(TransactionView transactionView, Deposit deposit) throws IOException {
