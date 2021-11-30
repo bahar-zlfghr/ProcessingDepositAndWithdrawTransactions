@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public class TransactionView {
 
     @Getter
-    private final String type;
+    private final TransactionType type;
 
     @Getter
     private final BigDecimal amount;
@@ -18,7 +18,7 @@ public class TransactionView {
     @Getter
     private final String depositID;
 
-    public TransactionView(String type, BigDecimal amount, String depositID) {
+    public TransactionView(TransactionType type, BigDecimal amount, String depositID) {
         this.type = type;
         this.amount = amount;
         this.depositID = depositID;
