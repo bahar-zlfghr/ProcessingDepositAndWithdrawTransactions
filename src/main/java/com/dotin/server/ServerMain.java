@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,7 +24,6 @@ public class ServerMain {
     public ServerMain(Integer serverPort) throws IOException {
         logger.info("Server socket is initializing...");
         this.serverSocket = new ServerSocket(serverPort);
-        this.serverSocket.setSoTimeout(60000);
         this.pool = Executors.newFixedThreadPool(5);
         logger.info("Server socket is initialized on " + serverPort + " port");
     }
@@ -38,21 +36,9 @@ public class ServerMain {
                 logger.info("Server socket find a new connection");
                 ServerThread serverThread = new ServerThread(connectionSocket);
                 pool.execute(serverThread);
-            } catch (SocketTimeoutException e) {
-                DepositRepository.saveDepositsChanges();
-                closeServerSocket(serverSocket);
-                break;
             } catch (IOException ioException) {
                 logger.error(ioException.getMessage(), ioException);
             }
-        }
-    }
-
-    private void closeServerSocket(ServerSocket serverSocket) {
-        try {
-            serverSocket.close();
-        } catch (IOException ioException) {
-            logger.error(ioException.getMessage(), ioException);
         }
     }
 

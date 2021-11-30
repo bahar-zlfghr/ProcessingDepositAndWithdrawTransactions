@@ -5,6 +5,7 @@ import com.dotin.server.exception.IncorrectTransactionAmountException;
 import com.dotin.server.model.data.Deposit;
 import com.dotin.server.model.data.ServerLogFile;
 import com.dotin.server.model.data.TransactionView;
+import com.dotin.server.model.repository.DepositRepository;
 import com.dotin.server.service.DepositService;
 import com.dotin.server.service.TransactionViewService;
 import com.dotin.server.util.LoggerUtil;
@@ -57,6 +58,7 @@ public class ServerThread implements Runnable {
     }
 
     private void endTask() throws IOException {
+        DepositRepository.saveDepositsChanges();
         reader.close();
         writer.close();
         connectionSocket.close();
