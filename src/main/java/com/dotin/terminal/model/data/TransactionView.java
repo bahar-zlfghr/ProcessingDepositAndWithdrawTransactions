@@ -8,9 +8,10 @@ import java.math.BigDecimal;
 /**
  * @author : Bahar Zolfaghari
  **/
-public class Transaction {
+public class TransactionView {
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String id;
 
     @Getter @Setter
@@ -22,10 +23,10 @@ public class Transaction {
     @Getter @Setter
     private String depositID;
 
-    public Transaction(TransactionView transactionView) {
-        this.id = transactionView.getId();
-        this.type = transactionView.getType();
-        this.amount = transactionView.getAmount();
-        this.depositID = transactionView.getDepositID();
+    public TransactionView(String id, TransactionType type, BigDecimal amount, String depositID) {
+        this.id = id;
+        this.type = type;
+        this.amount = amount;
+        this.depositID = depositID;
     }
 }

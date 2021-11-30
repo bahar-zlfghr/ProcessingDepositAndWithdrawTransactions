@@ -5,6 +5,7 @@ import com.dotin.terminal.exception.TransactionTypeMismatchException;
 import com.dotin.terminal.model.data.TerminalLogFile;
 import com.dotin.terminal.model.data.Transaction;
 import com.dotin.terminal.model.data.TransactionType;
+import com.dotin.terminal.model.data.TransactionView;
 import com.dotin.terminal.util.DocumentUtil;
 import com.dotin.terminal.util.LoggerUtil;
 import lombok.Getter;
@@ -24,7 +25,7 @@ import java.util.List;
 /**
  * @author : Bahar Zolfaghari
  **/
-public class TransactionRepository {
+public abstract class TransactionRepository {
 
     @Getter
     private static final List<Transaction> transactions = new ArrayList<>();
@@ -38,17 +39,8 @@ public class TransactionRepository {
                 Node transactionNode = transactionNodes.item(i);
                 if (transactionNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element transactionElement = (Element) transactionNode;
-                    String id = transactionElement.getAttribute("id");
-                    TransactionType type = TransactionType.getTransactionType(transactionElement.getAttribute("type"));
-                    if (type == null) {
-                        throw new TransactionTypeMismatchException("TransactionTypeMismatchException");
-                    }
-                    BigDecimal amount = new BigDecimal(transactionElement.getAttribute("amount"));
-                    if (amount.compareTo(BigDecimal.ZERO) < 0) {
-                        throw new TransactionAmountInvalidException("The transaction amount less than zero!");
-                    }
-                    String depositID = transactionElement.getAttribute("deposit");
-                    Transaction transaction = new Transaction(id, type, amount, depositID);
+                    TransactionView transactionView = createTransactionViewFromTransactionElement(transactionElement);
+                    Transaction transaction = new Transaction(transactionView);
                     transactions.add(transaction);
                 }
             }
@@ -56,5 +48,27 @@ public class TransactionRepository {
             logger.error(e.getMessage(), e);
         }
         logger.info("Transactions info fetched successfully");
+    }
+
+    private static TransactionView createTransactionViewFromTransactionElement(Element transactionElement) throws TransactionTypeMismatchException, TransactionAmountInvalidException {
+        String id = transactionElement.getAttribute("id");
+        TransactionType type = TransactionType.getTransactionType(transactionElement.getAttribute("type"));
+        transactionTypeValidation(type);
+        BigDecimal amount = new BigDecimal(transactionElement.getAttribute("amount"));
+        transactionAmountValidation(amount);
+        String depositID = transactionElement.getAttribute("deposit");
+        return new TransactionView(id, type, amount, depositID);
+    }
+
+    private static void transactionTypeValidation(TransactionType type) throws TransactionTypeMismatchException {
+        if (type == null) {
+            throw new TransactionTypeMismatchException("TransactionTypeMismatchException");
+        }
+    }
+
+    private static void transactionAmountValidation(BigDecimal amount) throws TransactionAmountInvalidException {
+        if (amount.compareTo(BigDecimal.ZERO) < 0) {
+            throw new TransactionAmountInvalidException("The transaction amount less than zero!");
+        }
     }
 }
