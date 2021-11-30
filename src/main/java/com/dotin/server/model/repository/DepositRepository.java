@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * @author : Bahar Zolfaghari
  **/
-public class DepositRepository {
+public abstract class DepositRepository {
 
     @Getter
     private static final List<Deposit> deposits = new ArrayList<>();
@@ -28,7 +28,7 @@ public class DepositRepository {
     public static void fetchDeposits() {
         logger = LoggerUtil.getLogger(ServerMain.class, ServerLogFile.getLogFilePath());
         try {
-            JSONObject jsonObject = JsonUtil.getJsonObject("core");
+            JSONObject jsonObject = JsonUtil.getJsonObject("core.json");
             JSONArray depositsArray = jsonObject.getJSONArray("deposits");
             for (int i = 0; i < depositsArray.length(); i++) {
                 Deposit deposit = createDepositFromJsonObject(depositsArray.getJSONObject(i));
@@ -59,7 +59,7 @@ public class DepositRepository {
 
     private synchronized static void writeJsonInFile(JSONObject jsonObject) {
         try {
-            PrintWriterUtil.writeJson(jsonObject, "src/main/resources/server/core");
+            PrintWriterUtil.writeJson(jsonObject, "src/main/resources/server/core.json");
             logger.info("The changes of deposits saved successfully");
         } catch (IOException ioException) {
             logger.error(ioException.getMessage(), ioException);
