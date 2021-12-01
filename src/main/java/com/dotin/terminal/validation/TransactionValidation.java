@@ -23,7 +23,7 @@ public interface TransactionValidation {
 
     static void transactionTypeValidation(TransactionType type) {
         if (type == null) {
-            TransactionRepository.getExceptions().add(new TransactionTypeMismatchException("TransactionTypeMismatchException"));
+            TransactionRepository.getExceptions().add(new TransactionTypeMismatchException("Transaction type mismatch!"));
         }
     }
 
