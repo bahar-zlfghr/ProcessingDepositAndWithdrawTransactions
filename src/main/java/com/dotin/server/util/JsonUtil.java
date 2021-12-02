@@ -2,6 +2,7 @@ package com.dotin.server.util;
 
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -18,5 +19,9 @@ public interface JsonUtil {
 
     static JSONObject getJsonObject() {
         return new JSONObject();
+    }
+
+    static void writeJsonInFile(JSONObject jsonObject) throws FileNotFoundException {
+        PrintWriterUtil.writeJson(jsonObject, "src/main/resources/server/core.json");
     }
 }

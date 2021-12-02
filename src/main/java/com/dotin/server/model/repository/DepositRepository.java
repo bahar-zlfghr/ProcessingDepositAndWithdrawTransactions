@@ -5,12 +5,12 @@ import com.dotin.server.model.data.Deposit;
 import com.dotin.server.model.data.ServerLogFile;
 import com.dotin.server.util.JsonUtil;
 import com.dotin.server.util.LoggerUtil;
-import com.dotin.server.util.PrintWriterUtil;
 import lombok.Getter;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ public abstract class DepositRepository {
     @Getter
     private static final List<Deposit> deposits = new ArrayList<>();
     private static Logger logger;
+    private static final Object lockObject = new Object();
 
     public static void fetchDeposits() {
         logger = LoggerUtil.getLogger(ServerMain.class, ServerLogFile.getLogFilePath());
@@ -54,15 +55,13 @@ public abstract class DepositRepository {
         jsonObject.put("port", ServerRepository.getServer().getPort());
         jsonObject.put("deposits", deposits);
         jsonObject.put("outLog", ServerRepository.getServer().getOutLogPath());
-        writeJsonInFile(jsonObject);
-    }
-
-    private synchronized static void writeJsonInFile(JSONObject jsonObject) {
-        try {
-            PrintWriterUtil.writeJson(jsonObject, "src/main/resources/server/core.json");
-            logger.info("The changes of deposits saved successfully");
-        } catch (IOException ioException) {
-            logger.error(ioException.getMessage(), ioException);
+        synchronized (lockObject) {
+            try {
+                JsonUtil.writeJsonInFile(jsonObject);
+                logger.info("The changes of deposits saved successfully");
+            } catch (FileNotFoundException e) {
+                logger.error(e.getMessage(), e);
+            }
         }
     }
 }
