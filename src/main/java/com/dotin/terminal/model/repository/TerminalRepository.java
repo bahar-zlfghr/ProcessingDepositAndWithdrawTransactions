@@ -46,10 +46,8 @@ public abstract class TerminalRepository {
             if (type == null) {
                 throw new TerminalTypeMismatchException("TerminalTypeMismatchException");
             }
-            else {
-                terminal.setId(id);
-                terminal.setType(type);
-            }
+            terminal.setId(id);
+            terminal.setType(type);
         }
     }
 
