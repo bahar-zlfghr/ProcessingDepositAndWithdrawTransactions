@@ -34,11 +34,11 @@ public class TransactionView {
 
     public static TransactionView createTransactionViewFromTransactionElement(Element transactionElement) {
         String id = transactionElement.getAttribute("id");
-        TransactionValidation.transactionUniqueIDValidation(id);
+        TransactionValidation.validateTransactionID(id);
         TransactionType type = TransactionType.getTransactionType(transactionElement.getAttribute("type"));
-        TransactionValidation.transactionTypeValidation(type);
+        TransactionValidation.validateTransactionType(type);
         BigDecimal amount = new BigDecimal(transactionElement.getAttribute("amount"));
-        TransactionValidation.transactionAmountValidation(amount);
+        TransactionValidation.validateTransactionAmount(amount);
         String depositID = transactionElement.getAttribute("deposit");
         return new TransactionView(id, type, amount, depositID);
     }
