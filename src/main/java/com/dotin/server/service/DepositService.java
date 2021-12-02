@@ -4,6 +4,7 @@ import com.dotin.server.exception.DepositBalanceNotEnoughException;
 import com.dotin.server.exception.IncorrectTransactionAmountException;
 import com.dotin.server.model.data.Deposit;
 import com.dotin.server.model.repository.DepositRepository;
+import com.dotin.server.validation.TransactionValidation;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -21,9 +22,7 @@ public abstract class DepositService {
 
     public static void deposit(Deposit deposit, BigDecimal amount) throws IncorrectTransactionAmountException {
         BigDecimal initialBalance = deposit.getInitialBalance();
-        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IncorrectTransactionAmountException("The transaction amount equal or less than zero!");
-        }
+        TransactionValidation.validateDeposit(amount);
         synchronized (lockObject) {
             BigDecimal newBalance = initialBalance.add(amount);
             deposit.setInitialBalance(newBalance);
@@ -33,12 +32,7 @@ public abstract class DepositService {
     public static void withdraw(Deposit deposit, BigDecimal amount) throws IncorrectTransactionAmountException, DepositBalanceNotEnoughException {
         BigDecimal initialBalance = deposit.getInitialBalance();
         BigDecimal upperBound = deposit.getUpperBound();
-        if (amount.compareTo(upperBound) > 0) {
-            throw new IncorrectTransactionAmountException("The transaction amount is more than the deposit upper bound!");
-        }
-        if (initialBalance.compareTo(amount) < 0) {
-            throw new DepositBalanceNotEnoughException("The deposit balance is less than transaction amount!");
-        }
+        TransactionValidation.validateWithdrawal(amount, upperBound, initialBalance);
         synchronized (lockObject) {
             BigDecimal newBalance = initialBalance.subtract(amount);
             deposit.setInitialBalance(newBalance);
